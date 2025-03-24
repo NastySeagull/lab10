@@ -1,0 +1,141 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace lab8._1
+{
+    public partial class Form1 : Form
+    {
+
+        List<Tuple<string, int>> array = new List<Tuple<string, int>>();
+
+        public Form1()
+        {
+            InitializeComponent();
+            InitializeListView();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            tabControl1.TabPages[0].Text = "Кафе";
+            tabControl1.SelectedTab = tabPage1;      // переключает на стриничку.
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            tabControl1.TabPages[1].Text = "Университет";
+            tabControl1.SelectedTab = tabPage2;
+        }    
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(textBox1.Text) && int.TryParse(textBox2.Text, out int c))
+            {
+                bool itemExists = false;
+
+                for (int i = 0; i < array.Count; i++) // проверка существует ли предмет в листе.
+                {                                
+                    if (textBox1.Text == array[i].Item1) // если сущ.
+                    {
+                        itemExists = true;
+
+                        int currenttime = array[i].Item2;
+                        currenttime += c;
+                        array.RemoveAt(i);
+                        array.Add(Tuple.Create(textBox1.Text, currenttime));
+
+                        //MessageBox.Show("u1 = run");
+
+                        listView1.Items.RemoveAt(i);
+
+                        ListViewItem item = new ListViewItem(textBox1.Text);
+                        item.SubItems.Add(Convert.ToString(currenttime));
+
+                        listView1.Items.Add(item);
+                        break; // останавливает цикл после true и обновления. **
+                    }
+                }
+                if (!itemExists) // если предмет не найдёт в листе.
+                {
+                    array.Add(Tuple.Create(textBox1.Text, c));
+
+                    ListViewItem item1 = new ListViewItem(textBox1.Text);
+                    item1.SubItems.Add(textBox2.Text);
+
+                    listView1.Items.Add(item1);
+                }
+
+                textBox1.Clear();
+                textBox2.Clear();
+
+            }
+            else
+            {
+                MessageBox.Show("Введите значение.");
+            }
+        }     
+
+        private void InitializeListView()
+        {
+            listView1.Columns.Add("ФИО", 120);
+            listView1.Columns.Add("Часы работы", 50);
+
+            AddWorkerRecord("И.И. Иванов", "5");
+            array.Add(Tuple.Create("И.И. Иванов", 5));
+        }
+
+        private void AddWorkerRecord(string initials, string grade)
+        {
+            ListViewItem item = new ListViewItem(initials);
+            item.SubItems.Add(grade);
+            listView1.Items.Add(item);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(textBox1.Text) && int.TryParse(textBox2.Text, out int c))
+            {
+                bool itemExists = false;
+
+                for (int i = 0; i < array.Count; i++)
+                {
+                    if (textBox1.Text == array[i].Item1)
+                    {
+                        itemExists = true;
+
+                        int currenttime = array[i].Item2;
+                        currenttime -= c;
+                        array.RemoveAt(i);
+                        array.Add(Tuple.Create(textBox1.Text, currenttime));
+
+                        listView1.Items.RemoveAt(i);
+
+                        ListViewItem item = new ListViewItem(textBox1.Text);
+                        item.SubItems.Add(Convert.ToString(currenttime));
+
+                        listView1.Items.Add(item);
+                        break; // останавливает цикл после true и обновления. **
+                    }
+                }
+                if (!itemExists)
+                {
+                    MessageBox.Show("Сотрудник не найден.");
+                }
+
+                textBox1.Clear();
+                textBox2.Clear();
+
+            }
+            else
+            {
+                MessageBox.Show("Введите значение.");
+            }
+        }
+    }
+}
