@@ -61,7 +61,7 @@ namespace lab8._1
                         break; // останавливает цикл после true и обновления. **
                     }
                 }
-                if () // если предмет не найдёт в листе.
+                if (!itemExists) // если предмет не найдёт в листе.
                 {
                     array.Add(Tuple.Create(textBox1.Text, c));
 
