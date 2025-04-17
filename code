@@ -123,6 +123,10 @@ namespace lab8._1
                         break; // останавливает цикл после true и обновления. **
                     }
                 }
+                if (!itemExists)
+                {
+                    MessageBox.Show("Сотрудник не найден.");
+                }
 
                 textBox1.Clear();
                 textBox2.Clear();
